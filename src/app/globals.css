@@ -1,0 +1,27 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    /* Transparent so ?bg=transparent works inside Wix iframes;
+       .EmbedPage paints the default background. */
+    background: transparent;
+}
+
+body {
+    font-family: var(--font-space), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    color: #1a1c22;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}

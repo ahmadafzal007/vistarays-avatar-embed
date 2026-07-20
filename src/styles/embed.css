@@ -1,0 +1,30 @@
+/* =============================================================================
+   Embed-only additions. The card itself reuses the exact TeamAvatar-* styles
+   from the main vistarays.de site (team-avatar.css, copied verbatim).
+   ============================================================================= */
+
+/* The card is the whole page here — same dimmed backdrop as the popup on the
+   main site, with the card centered inside the iframe. */
+.TeamAvatar-overlay--embed {
+    position: fixed;
+    inset: 0;
+}
+
+/* Idle state: the green circle doubles as the "call" button */
+.TeamAvatar-callAvatar--btn {
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.TeamAvatar-callAvatar--btn:hover,
+.TeamAvatar-callAvatar--btn:focus-visible {
+    transform: scale(1.07);
+    box-shadow: 0 6px 22px rgba(34, 197, 94, 0.45);
+}
+
+.TeamAvatar-callAvatar--btn:active {
+    transform: scale(0.98);
+}
