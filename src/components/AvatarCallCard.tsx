@@ -101,11 +101,33 @@ const useRingtone = (isPlaying: boolean) => {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContextClass) return;
 
+    // When the call auto-starts there has been no user gesture yet, so the
+    // AudioContext is created in the "suspended" state and the ringtone would
+    // be silent. Resume it as soon as the browser allows: immediately when the
+    // embedding iframe delegates autoplay permission, otherwise on the first
+    // pointer/keyboard interaction.
     const ctx = new AudioContextClass();
-    const stopRinging = startRingingAudio(ctx);
+    let stopRinging: (() => void) | null = null;
+    let disposed = false;
+
+    const begin = () => {
+      if (disposed || stopRinging) return;
+      stopRinging = startRingingAudio(ctx);
+    };
+
+    const tryResume = () => {
+      ctx.resume().then(begin).catch(() => {});
+    };
+
+    tryResume();
+    window.addEventListener("pointerdown", tryResume);
+    window.addEventListener("keydown", tryResume);
 
     return () => {
-      stopRinging();
+      disposed = true;
+      window.removeEventListener("pointerdown", tryResume);
+      window.removeEventListener("keydown", tryResume);
+      stopRinging?.();
       ctx.close().catch(() => {});
     };
   }, [isPlaying]);
